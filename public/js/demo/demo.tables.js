@@ -1,0 +1,1 @@
+(function(a){a(document).ready(function(b){a("table#da-ex-datatable-numberpaging").dataTable({sPaginationType:"full_numbers", aaSorting: []});a("table#da-ex-datatable-default").dataTable()})})(jQuery);
