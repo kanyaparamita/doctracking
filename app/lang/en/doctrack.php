@@ -32,6 +32,7 @@ return array(
     'requirement' => 'Requirement',
     'requirements' => 'Requirements',
     'stage' => 'Base Process',
+    'prequisite' => 'Prequisite',
     'input_type' => 'Input Type',
     'output_type' => 'Output Type',
     'mandatory' => 'Mandatory',
@@ -81,6 +82,7 @@ return array(
     'sb_m_file' => 'File Manager',
     'sb_m_chart' => 'Chart',
     'sb_m_setting' => 'Setting',
+    'sb_m_report' => 'Report',
 
     // Menu User
     'user_i_header' => 'Users list',
@@ -143,6 +145,11 @@ return array(
     // Menu Requirement
     'rq_e_header' => 'Edit Requirement',
     'rq_c_header' => 'Create Requirement',
+
+
+    // Menu Prequisite
+    'pq_e_header' => 'Edit Prequisite',
+    'pq_c_header' => 'Create Prequisite',
 
     // Base proses
     'bp_e_header' => 'Edit Base Process',

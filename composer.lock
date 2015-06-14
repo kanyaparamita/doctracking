@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "11ea2735d352c37dcfc693492ce2acaf",
+    "hash": "8ef687d28444aff8c669c82beb773279",
     "packages": [
         {
             "name": "barryvdh/elfinder-bundle",
@@ -1065,6 +1065,49 @@
             "time": "2012-12-21 11:40:51"
         },
         {
+            "name": "reportico/laravel-reportico",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reportico-web/laravel-reportico.git",
+                "reference": "dd39a37e4ad66071a6e6e75ca33c35424ca7ad31"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reportico-web/laravel-reportico/zipball/dd39a37e4ad66071a6e6e75ca33c35424ca7ad31",
+                "reference": "dd39a37e4ad66071a6e6e75ca33c35424ca7ad31",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.2.*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/migrations",
+                    "src/controllers"
+                ],
+                "files": [
+                    "src/Reportico/Reportico/reportico.php"
+                ],
+                "psr-0": {
+                    "Reportico\\Reportico\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Reportico",
+                    "email": "info@reportico.org"
+                }
+            ],
+            "time": "2015-04-12 09:34:34"
+        },
+        {
             "name": "stack/builder",
             "version": "v1.0.2",
             "source": {
@@ -2016,9 +2059,11 @@
         "chumper/zipper": 20,
         "barryvdh/elfinder-bundle": 20,
         "ludo237/barcode": 20,
-        "zizaco/entrust": 20
+        "zizaco/entrust": 20,
+        "reportico/laravel-reportico": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }

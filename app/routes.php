@@ -13,6 +13,8 @@
 
 Route::get('/', function()
 {
+    if(Session::get('alive') == 1)
+        Session::flush();
 	if (Auth::check()) {
         if (Auth::user()->can('dashboard_admin')){
             return Redirect::to('dashboardAdmin');
@@ -27,14 +29,20 @@ Route::get('/', function()
 
 Route::get('login', array('uses' => 'UserController@showLogin'));
 Route::post('login', array('uses' => 'UserController@doLogin'));
-Route::get('outsider', array('uses' => 'OutsiderController@index'));
-Route::get('outsider/{id}/requirements', array('uses' => 'OutsiderController@showRequirement'));
-Route::post('outsider/{id}/start', array('uses' => 'OutsiderController@startService'));
+
+if(Session::get('alive') == 1){
+    Route::get('outsider', array('uses' => 'OutsiderController@index'));
+    Route::get('outsider/{id}/prequisites', array('uses' => 'OutsiderController@showPrequisite'));
+    Route::post('outsider/{id}/prequisites/{num}', array('uses' => 'OutsiderController@savePrequisite'));
+    Route::get('outsider/{id}/requirements/{token}', array('uses' => 'OutsiderController@showRequirement'));
+    Route::post('outsider/{id}/start/{token}', array('uses' => 'OutsiderController@startAllService'));
+}
+
 Route::get('outsider/details/{token}', array('uses' => 'OutsiderController@detail')); // untuk fast debuging
 Route::post('outsider/details', array('uses' => 'OutsiderController@detail'));
+Route::get('print/checklist/{token}', array('uses'=>'PrintController@checklist'));
 Route::post('customers/find', array('uses' => 'CustomerController@find'));
 Route::post('customers/create', array('uses' => 'CustomerController@store'));
-Route::get('print/checklist/{token}', array('uses'=>'PrintController@checklist'));
 
 Route::group(array('before' => 'auth'), function() {
     Route::get('logout', array('uses' => 'UserController@doLogout'));
@@ -57,6 +65,13 @@ Route::group(array('before' => 'auth'), function() {
     Route::get('requirements/{service_id}/edit/{req_id}', array('uses'=>'RequirementController@edit'));
     Route::put('requirements/{service_id}/update/{req_id}', array('uses'=>'RequirementController@update', 'as'=>'requirements.update'));
     Route::delete('requirements/{service_id}/delete/{req_id}', array('uses'=>'RequirementController@destroy'));
+
+    Route::get('prequisites/{service_id}/create', array('uses'=>'PrequisiteController@create'));
+    Route::post('prequisites/{service_id}/create', array('uses'=>'PrequisiteController@store'));
+    Route::get('prequisites/{service_id}/edit/{preq_id}', array('uses'=>'PrequisiteController@edit'));
+    Route::post('prequisites/{service_id}/update/{preq_id}', array('uses'=>'PrequisiteController@update'));
+    Route::delete('prequisites/{service_id}/delete/{preq_id}', array('uses'=>'PrequisiteController@destroy'));
+
 
     Route::get('processes/{service_id}/', array('uses'=>'ProcessController@index'));
     Route::get('processes/{service_id}/create', array('uses'=>'ProcessController@create'));
@@ -97,6 +112,5 @@ Route::group(array('before' => 'auth'), function() {
     Route::resource('services', 'ServiceController');
     Route::resource('roles', 'RoleController');
     Route::resource('reqReferences', 'RequirementReferenceController');
-
 
 });

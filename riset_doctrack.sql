@@ -1,44 +1,33 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
+-- version 4.4.1.1
 -- http://www.phpmyadmin.net
 --
--- Inang: 127.0.0.1
--- Waktu pembuatan: 17 Mei 2015 pada 08.35
--- Versi Server: 5.5.32
--- Versi PHP: 5.4.19
+-- Host: localhost
+-- Generation Time: Jun 14, 2015 at 08:07 AM
+-- Server version: 5.5.42
+-- PHP Version: 5.6.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-
 --
--- Basis data: `riset_doctrack`
+-- Database: `riset_doctrack`
 --
-CREATE DATABASE IF NOT EXISTS `riset_doctrack` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `riset_doctrack`;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `assigned_roles`
+-- Table structure for table `assigned_roles`
 --
 
-CREATE TABLE IF NOT EXISTS `assigned_roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `assigned_roles` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `role_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_ar_user_id_idx` (`user_id`),
-  KEY `fk_ar_role_id_idx` (`role_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+  `role_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `assigned_roles`
+-- Dumping data for table `assigned_roles`
 --
 
 INSERT INTO `assigned_roles` (`id`, `user_id`, `role_id`) VALUES
@@ -62,11 +51,11 @@ INSERT INTO `assigned_roles` (`id`, `user_id`, `role_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `base_process`
+-- Table structure for table `base_process`
 --
 
-CREATE TABLE IF NOT EXISTS `base_process` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `base_process` (
+  `id` int(11) NOT NULL,
   `service_id` int(11) NOT NULL,
   `pre_con_bp` varchar(30) DEFAULT NULL COMMENT 'bp yang sebagai syarat untuk proses ini.\\nberupa angka yang dipisahkan dengan ;\\ntanpa spasi\\n\\n2;34;2;',
   `next_bp_id` varchar(30) DEFAULT NULL COMMENT 'base proses selanjutnya',
@@ -80,14 +69,11 @@ CREATE TABLE IF NOT EXISTS `base_process` (
   `is_display` int(1) DEFAULT '1' COMMENT 'Apakah ditampilkan dalam tracking atau tidak',
   `display_text` varchar(100) DEFAULT NULL,
   `name` varchar(100) DEFAULT 'No Name',
-  `description` text,
-  PRIMARY KEY (`id`),
-  KEY `fk_service_id_idx` (`service_id`),
-  KEY `fk_unit_i_idx` (`unit_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tahapan untuk sebuah service\n' AUTO_INCREMENT=51 ;
+  `description` text
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=latin1 COMMENT='Tahapan untuk sebuah service\n';
 
 --
--- Dumping data untuk tabel `base_process`
+-- Dumping data for table `base_process`
 --
 
 INSERT INTO `base_process` (`id`, `service_id`, `pre_con_bp`, `next_bp_id`, `unit_id`, `roles`, `generate_form_pembayaran`, `generate_form_perizinan`, `is_start`, `is_checkpoint`, `is_finish`, `is_display`, `display_text`, `name`, `description`) VALUES
@@ -138,31 +124,26 @@ INSERT INTO `base_process` (`id`, `service_id`, `pre_con_bp`, `next_bp_id`, `uni
 (46, 6, '45', '47', 18, '14', NULL, NULL, NULL, 1, NULL, NULL, 'Paraf Surat Izin 2', 'Paraf Surat Izin 2', 'Memeriksa berkas Izin Operasional Kesehatan    , jika tidak setuju dikembalikan kepada Kabid Pelayanan Terpadu untuk diperbaiki, jika setuju diparaf dan diserahkan kepada Kepala BPMD-PTSP'),
 (47, 6, '46', '48', 17, '15', NULL, NULL, NULL, NULL, NULL, 1, 'Penandatanganan Surat Izin', 'Penandatanganan Surat Izin', 'Memeriksa berkas Izin Operasional Kesehatan, jika tidak setuju dikembalikan kepada Sekretaris BPMD-PTSP untuk diperbaiki, jika setuju ditandatangani dan diserahkan kepada Petugas Administrasi Umum'),
 (48, 6, '47', '49', 33, '16', NULL, NULL, NULL, NULL, NULL, NULL, 'Pengarsipan', 'Pengarsipan', 'Mencatat dalam buku agenda, menstempel,  menggandakan, mengarsipkan dan diserahkan kepada Petugas Loket Penyerahan Izin'),
-(49, 6, '48', '', 33, '17', NULL, NULL, NULL, NULL, 1, 1, 'Pengambilan Surat Izin', 'Pengambilan Berkas', 'Mencatat dalam buku agenda dan diserahkan kepada pemohon'),
-(50, 7, '', '', 26, '17:8', NULL, NULL, 1, NULL, NULL, NULL, '', 'Buat dulu', '');
+(49, 6, '48', '', 33, '17', NULL, NULL, NULL, NULL, 1, 1, 'Pengambilan Surat Izin', 'Pengambilan Berkas', 'Mencatat dalam buku agenda dan diserahkan kepada pemohon');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `base_process_output`
+-- Table structure for table `base_process_output`
 --
 
-CREATE TABLE IF NOT EXISTS `base_process_output` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `base_process_output` (
+  `id` int(11) NOT NULL,
   `bp_id` int(11) DEFAULT NULL,
   `name` varchar(100) DEFAULT NULL,
   `type_input` int(1) NOT NULL DEFAULT '1' COMMENT 'Ini jenis tipe field yang akan di generate. Terdapat 3 jenis\\n- file : untuk upload file\\n- input : untuk input berupa ketikan\\n- text : sekedar text, (informasi tertentu berupa tulisan) . Secara default, name akan menjadi isi dari informasi tersebut\\n\\nfile yang bisa di upload berupa pdf/jpeg',
   `type_output` int(1) NOT NULL DEFAULT '1',
   `is_required` int(1) NOT NULL DEFAULT '1',
-  `field` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_bpo_ti_id_idx` (`type_input`),
-  KEY `fk_bpo_bp_id_idx` (`bp_id`),
-  KEY `fk_bpo_to_id_idx` (`type_output`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Option hasil yang diharapkan dari base proses' AUTO_INCREMENT=14 ;
+  `field` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1 COMMENT='Option hasil yang diharapkan dari base proses';
 
 --
--- Dumping data untuk tabel `base_process_output`
+-- Dumping data for table `base_process_output`
 --
 
 INSERT INTO `base_process_output` (`id`, `bp_id`, `name`, `type_input`, `type_output`, `is_required`, `field`) VALUES
@@ -183,11 +164,11 @@ INSERT INTO `base_process_output` (`id`, `bp_id`, `name`, `type_input`, `type_ou
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `base_process_state`
+-- Table structure for table `base_process_state`
 --
 
-CREATE TABLE IF NOT EXISTS `base_process_state` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `base_process_state` (
+  `id` int(11) NOT NULL,
   `bp_id` int(11) DEFAULT NULL,
   `se_id` int(11) NOT NULL COMMENT 'service execution id',
   `service_id` int(11) DEFAULT NULL,
@@ -196,22 +177,16 @@ CREATE TABLE IF NOT EXISTS `base_process_state` (
   `started_time` datetime NOT NULL,
   `finished_by` int(11) DEFAULT NULL,
   `finished_time` datetime NOT NULL,
-  `comment` text,
-  PRIMARY KEY (`id`),
-  KEY `fk_bp_id_idx` (`bp_id`),
-  KEY `fk_service_id_idx` (`service_id`),
-  KEY `fk_started_by_idx` (`started_by`),
-  KEY `fk_finished_by_idx` (`finished_by`),
-  KEY `fk_se_id_idx` (`se_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='status eksekusi dari  base proses' AUTO_INCREMENT=107 ;
+  `comment` text
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1 COMMENT='status eksekusi dari  base proses';
 
 --
--- Dumping data untuk tabel `base_process_state`
+-- Dumping data for table `base_process_state`
 --
 
 INSERT INTO `base_process_state` (`id`, `bp_id`, `se_id`, `service_id`, `status`, `started_by`, `started_time`, `finished_by`, `finished_time`, `comment`) VALUES
 (1, 2, 1, 2, 2, 17, '2014-11-30 05:11:17', 17, '2014-11-30 05:11:12', NULL),
-(2, 2, 2, 2, 1, 17, '2015-04-13 08:04:53', NULL, '0000-00-00 00:00:00', NULL),
+(2, 2, 2, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
 (3, 3, 1, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
 (4, 2, 3, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
 (5, 14, 4, 4, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
@@ -313,49 +288,74 @@ INSERT INTO `base_process_state` (`id`, `bp_id`, `se_id`, `service_id`, `status`
 (101, 47, 86, 6, 3, 12, '2014-12-04 08:12:25', 12, '2014-12-04 08:12:25', 'super user'),
 (102, 48, 86, 6, 3, 12, '2014-12-04 08:12:35', 12, '2014-12-04 08:12:35', 'super user'),
 (103, 49, 86, 6, 3, 12, '2014-12-04 08:12:18', 12, '2014-12-04 08:12:18', 'super user'),
-(104, 2, 91, 2, 2, 17, '2015-04-13 08:04:20', 17, '2015-04-13 08:04:33', NULL),
-(105, 3, 91, 2, 2, 16, '2015-04-13 08:04:38', 16, '2015-04-13 08:04:53', NULL),
-(106, 50, 92, 7, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL);
+(104, 38, 91, 6, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(105, 14, 92, 4, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(106, 2, 93, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(107, 2, 94, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(108, 2, 95, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(109, 2, 96, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(110, 14, 97, 4, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(111, 26, 98, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(112, 38, 99, 6, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(113, 26, 100, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(114, 2, 106, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(115, 2, 107, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(116, 14, 108, 4, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(117, 26, 109, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(118, 38, 110, 6, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(119, 26, 111, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(120, 2, 112, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(121, 14, 113, 4, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(122, 26, 114, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(123, 38, 115, 6, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(124, 26, 116, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(125, 26, 117, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(126, 2, 118, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(127, 26, 119, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(128, 2, 120, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(129, 26, 121, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(130, 2, 122, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(131, 26, 123, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(132, 2, 124, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(133, 26, 125, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(134, 2, 126, 2, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(135, 26, 128, 5, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL),
+(136, 38, 129, 6, 0, NULL, '0000-00-00 00:00:00', NULL, '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `base_process_state_output`
+-- Table structure for table `base_process_state_output`
 --
 
-CREATE TABLE IF NOT EXISTS `base_process_state_output` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `base_process_state_output` (
+  `id` int(11) NOT NULL,
   `se_id` int(11) DEFAULT NULL,
   `bps_id` int(11) DEFAULT NULL,
   `bpo_id` int(11) DEFAULT NULL,
   `data` text,
   `updated_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_bpso_bps_id_idx` (`bps_id`),
-  KEY `fk_bpso_se_id_idx` (`se_id`),
-  KEY `fk_bpso_bpo_id_idx` (`bpo_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='data yang dihasilkan dari base proses, requirement outputnya berdasarkan dari base_process_output' AUTO_INCREMENT=1 ;
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='data yang dihasilkan dari base proses, requirement outputnya berdasarkan dari base_process_output';
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `organizations`
+-- Table structure for table `organizations`
 --
 
-CREATE TABLE IF NOT EXISTS `organizations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `organizations` (
+  `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL COMMENT 'Nama lengkap organisasi yang menggunakan',
   `nick` varchar(45) DEFAULT 'Org' COMMENT 'Singkatan untuk nama',
   `email` varchar(45) DEFAULT NULL,
   `phone` varchar(45) DEFAULT NULL,
   `website` varchar(100) DEFAULT NULL,
-  `address` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `address` text
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `organizations`
+-- Dumping data for table `organizations`
 --
 
 INSERT INTO `organizations` (`id`, `name`, `nick`, `email`, `phone`, `website`, `address`) VALUES
@@ -364,21 +364,19 @@ INSERT INTO `organizations` (`id`, `name`, `nick`, `email`, `phone`, `website`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `permissions`
+-- Table structure for table `permissions`
 --
 
-CREATE TABLE IF NOT EXISTS `permissions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `permissions` (
+  `id` int(11) NOT NULL,
   `name` varchar(150) DEFAULT NULL,
   `display_name` varchar(150) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `permissions`
+-- Dumping data for table `permissions`
 --
 
 INSERT INTO `permissions` (`id`, `name`, `display_name`, `created_at`, `updated_at`) VALUES
@@ -398,20 +396,17 @@ INSERT INTO `permissions` (`id`, `name`, `display_name`, `created_at`, `updated_
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `permission_role`
+-- Table structure for table `permission_role`
 --
 
-CREATE TABLE IF NOT EXISTS `permission_role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `permission_role` (
+  `id` int(11) NOT NULL,
   `permission_id` int(11) DEFAULT NULL,
-  `role_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_pr_role_id` (`role_id`),
-  KEY `fk_pr_permission_id_idx` (`permission_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=121 ;
+  `role_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `permission_role`
+-- Dumping data for table `permission_role`
 --
 
 INSERT INTO `permission_role` (`id`, `permission_id`, `role_id`) VALUES
@@ -445,20 +440,18 @@ INSERT INTO `permission_role` (`id`, `permission_id`, `role_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `positions`
+-- Table structure for table `positions`
 --
 
-CREATE TABLE IF NOT EXISTS `positions` (
+CREATE TABLE `positions` (
   `id` int(11) NOT NULL,
   `organization_id` int(11) DEFAULT NULL,
   `name` varchar(45) DEFAULT NULL,
-  `description` text,
-  PRIMARY KEY (`id`),
-  KEY `fk_position_organization_id_idx` (`organization_id`)
+  `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `positions`
+-- Dumping data for table `positions`
 --
 
 INSERT INTO `positions` (`id`, `organization_id`, `name`, `description`) VALUES
@@ -471,17 +464,39 @@ INSERT INTO `positions` (`id`, `organization_id`, `name`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `requirements`
+-- Table structure for table `prequisites`
 --
 
-CREATE TABLE IF NOT EXISTS `requirements` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` text,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+CREATE TABLE `prequisites` (
+  `id` int(12) NOT NULL,
+  `parent_id` int(12) NOT NULL,
+  `prequisite_id` int(12) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `requirements`
+-- Dumping data for table `prequisites`
+--
+
+INSERT INTO `prequisites` (`id`, `parent_id`, `prequisite_id`) VALUES
+(4, 7, 5),
+(5, 2, 4),
+(8, 2, 5),
+(10, 2, 6),
+(15, 5, 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requirements`
+--
+
+CREATE TABLE `requirements` (
+  `id` int(11) NOT NULL,
+  `value` text
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `requirements`
 --
 
 INSERT INTO `requirements` (`id`, `value`) VALUES
@@ -510,23 +525,20 @@ INSERT INTO `requirements` (`id`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `requirement_storages`
+-- Table structure for table `requirement_storages`
 --
 
-CREATE TABLE IF NOT EXISTS `requirement_storages` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `requirement_storages` (
+  `id` int(11) NOT NULL,
   `requirement_id` int(11) DEFAULT NULL COMMENT 'storage untuk requirement yang mana',
   `se_id` int(11) NOT NULL,
   `data` text,
   `updated_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_requirement_id_idx` (`requirement_id`),
-  KEY `fk_rs_se_id_idx` (`se_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='tabel penyimpanan data upload dari pemohon, list data yang dibutuhkan berdasarkan tabel service_requirements' AUTO_INCREMENT=149 ;
+  `created_at` datetime DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=215 DEFAULT CHARSET=latin1 COMMENT='tabel penyimpanan data upload dari pemohon, list data yang dibutuhkan berdasarkan tabel service_requirements';
 
 --
--- Dumping data untuk tabel `requirement_storages`
+-- Dumping data for table `requirement_storages`
 --
 
 INSERT INTO `requirement_storages` (`id`, `requirement_id`, `se_id`, `data`, `updated_at`, `created_at`) VALUES
@@ -673,30 +685,93 @@ INSERT INTO `requirement_storages` (`id`, `requirement_id`, `se_id`, `data`, `up
 (141, 10, 45, '93821405-Requirement-Dokumen_UKL_UPL.pdf', '2014-12-03 02:14:06', '2014-12-03 02:14:06'),
 (142, 11, 45, '93821405-Requirement-KTP.jpg', '2014-12-03 02:14:06', '2014-12-03 02:14:06'),
 (143, 12, 45, '93821405-Requirement-KTP.jpg', '2014-12-03 02:14:07', '2014-12-03 02:14:07'),
-(144, 2, 91, '24063578-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-04-13 08:05:55', '2015-04-13 08:05:55'),
-(145, 3, 91, '24063578-Requirement-Ijazah.pdf', '2015-04-13 08:05:55', '2015-04-13 08:05:55'),
-(146, 4, 91, '24063578-Requirement-Surat_Rekomendasi.pdf', '2015-04-13 08:05:55', '2015-04-13 08:05:55'),
-(147, 5, 91, '24063578-Requirement-Surat_Rekomendasi.pdf', '2015-04-13 08:05:56', '2015-04-13 08:05:56'),
-(148, 13, 92, '24178693-Requirement-KTP.pdf', '2015-04-23 05:57:38', '2015-04-23 05:57:38');
+(144, 6, 91, '28790513-Requirement-Advice_Planning___KRK.pdf', '2015-06-06 16:55:20', '2015-06-06 16:55:20'),
+(145, 7, 91, '28790513-Requirement-Surat_surat_tanah.pdf', '2015-06-06 16:55:20', '2015-06-06 16:55:20'),
+(146, 8, 91, '28790513-Requirement-Dokumen_Rencana_Teknis.zip', '2015-06-06 16:55:20', '2015-06-06 16:55:20'),
+(147, 11, 91, '28790513-Requirement-KTP.jpg', '2015-06-06 16:55:20', '2015-06-06 16:55:20'),
+(148, 12, 91, '28790513-Requirement-KTP.jpg', '2015-06-06 16:55:20', '2015-06-06 16:55:20'),
+(149, 2, 93, '94086573-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 21:51:04', '2015-06-07 21:51:04'),
+(150, 3, 93, '94086573-Requirement-Ijazah.pdf', '2015-06-07 21:51:04', '2015-06-07 21:51:04'),
+(151, 4, 93, '94086573-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:51:04', '2015-06-07 21:51:04'),
+(152, 5, 93, '94086573-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:51:04', '2015-06-07 21:51:04'),
+(153, 2, 94, '24563197-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 21:51:20', '2015-06-07 21:51:20'),
+(154, 3, 94, '24563197-Requirement-Ijazah.pdf', '2015-06-07 21:51:20', '2015-06-07 21:51:20'),
+(155, 4, 94, '24563197-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:51:20', '2015-06-07 21:51:20'),
+(156, 5, 94, '24563197-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:51:20', '2015-06-07 21:51:20'),
+(157, 2, 95, '68520437-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 21:51:36', '2015-06-07 21:51:36'),
+(158, 3, 95, '68520437-Requirement-Ijazah.pdf', '2015-06-07 21:51:36', '2015-06-07 21:51:36'),
+(159, 4, 95, '68520437-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:51:36', '2015-06-07 21:51:36'),
+(160, 5, 95, '68520437-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:51:36', '2015-06-07 21:51:36'),
+(161, 2, 96, '98013567-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(162, 3, 96, '98013567-Requirement-Ijazah.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(163, 4, 96, '98013567-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(164, 5, 96, '98013567-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(165, 6, 99, '17920456-Requirement-Advice_Planning___KRK.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(166, 7, 99, '17920456-Requirement-Surat_surat_tanah.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(167, 8, 99, '17920456-Requirement-Dokumen_Rencana_Teknis.zip', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(168, 9, 99, '17920456-Requirement-Dokumen_AMDAL.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(169, 10, 99, '17920456-Requirement-Dokumen_UKL_UPL.pdf', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(170, 11, 99, '17920456-Requirement-KTP.jpg', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(171, 12, 99, '17920456-Requirement-KTP.jpg', '2015-06-07 21:53:04', '2015-06-07 21:53:04'),
+(172, 2, 106, '59284137-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 22:14:13', '2015-06-07 22:14:13'),
+(173, 3, 106, '59284137-Requirement-Ijazah.pdf', '2015-06-07 22:14:13', '2015-06-07 22:14:13'),
+(174, 4, 106, '59284137-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 22:14:13', '2015-06-07 22:14:13'),
+(175, 5, 106, '59284137-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 22:14:13', '2015-06-07 22:14:13'),
+(176, 2, 107, '05786913-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 22:14:31', '2015-06-07 22:14:31'),
+(177, 3, 107, '05786913-Requirement-Ijazah.pdf', '2015-06-07 22:14:31', '2015-06-07 22:14:31'),
+(178, 4, 107, '05786913-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 22:14:31', '2015-06-07 22:14:31'),
+(179, 5, 107, '05786913-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 22:14:31', '2015-06-07 22:14:31'),
+(180, 2, 112, '08967541-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-07 22:16:25', '2015-06-07 22:16:25'),
+(181, 3, 112, '08967541-Requirement-Ijazah.pdf', '2015-06-07 22:16:25', '2015-06-07 22:16:25'),
+(182, 4, 112, '08967541-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 22:16:25', '2015-06-07 22:16:25'),
+(183, 5, 112, '08967541-Requirement-Surat_Rekomendasi.pdf', '2015-06-07 22:16:25', '2015-06-07 22:16:25'),
+(184, 14, 117, 'AA', '2015-06-08 03:07:00', '2015-06-08 03:07:00'),
+(185, 2, 118, '63024587-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-08 03:07:00', '2015-06-08 03:07:00'),
+(186, 3, 118, '63024587-Requirement-Ijazah.pdf', '2015-06-08 03:07:00', '2015-06-08 03:07:00'),
+(187, 4, 118, '63024587-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:07:00', '2015-06-08 03:07:00'),
+(188, 5, 118, '63024587-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:07:00', '2015-06-08 03:07:00'),
+(189, 14, 119, 'Ajib Gan', '2015-06-08 03:11:42', '2015-06-08 03:11:42'),
+(190, 2, 120, '70521498-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-08 03:11:42', '2015-06-08 03:11:42'),
+(191, 3, 120, '70521498-Requirement-Ijazah.pdf', '2015-06-08 03:11:42', '2015-06-08 03:11:42'),
+(192, 4, 120, '70521498-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:11:42', '2015-06-08 03:11:42'),
+(193, 5, 120, '70521498-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:11:42', '2015-06-08 03:11:42'),
+(194, 14, 121, 'Ajib Gan', '2015-06-08 03:13:01', '2015-06-08 03:13:01'),
+(195, 2, 122, '81324605-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-08 03:13:01', '2015-06-08 03:13:01'),
+(196, 3, 122, '81324605-Requirement-Ijazah.pdf', '2015-06-08 03:13:01', '2015-06-08 03:13:01'),
+(197, 4, 122, '81324605-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:13:01', '2015-06-08 03:13:01'),
+(198, 5, 122, '81324605-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:13:01', '2015-06-08 03:13:01'),
+(199, 14, 123, 'Ajib Gan', '2015-06-08 03:14:28', '2015-06-08 03:14:28'),
+(200, 2, 124, '36420781-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-08 03:14:28', '2015-06-08 03:14:28'),
+(201, 3, 124, '36420781-Requirement-Ijazah.pdf', '2015-06-08 03:14:28', '2015-06-08 03:14:28'),
+(202, 4, 124, '36420781-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:14:28', '2015-06-08 03:14:28'),
+(203, 5, 124, '36420781-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:14:28', '2015-06-08 03:14:28'),
+(204, 14, 125, 'Ajib Gan', '2015-06-08 03:15:12', '2015-06-08 03:15:12'),
+(205, 2, 126, '45608271-Requirement-Surat_Tanda_Registrasi__STR_.pdf', '2015-06-08 03:15:12', '2015-06-08 03:15:12'),
+(206, 3, 126, '45608271-Requirement-Ijazah.pdf', '2015-06-08 03:15:12', '2015-06-08 03:15:12'),
+(207, 4, 126, '45608271-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:15:12', '2015-06-08 03:15:12'),
+(208, 5, 126, '45608271-Requirement-Surat_Rekomendasi.pdf', '2015-06-08 03:15:12', '2015-06-08 03:15:12'),
+(209, 14, 128, 'A', '2015-06-08 04:08:39', '2015-06-08 04:08:39'),
+(210, 6, 129, '84102673-Requirement-Advice_Planning___KRK.pdf', '2015-06-08 04:08:39', '2015-06-08 04:08:39'),
+(211, 7, 129, '84102673-Requirement-Surat_surat_tanah.pdf', '2015-06-08 04:08:39', '2015-06-08 04:08:39'),
+(212, 8, 129, '84102673-Requirement-Dokumen_Rencana_Teknis.zip', '2015-06-08 04:08:39', '2015-06-08 04:08:39'),
+(213, 11, 129, '84102673-Requirement-KTP.jpg', '2015-06-08 04:08:39', '2015-06-08 04:08:39'),
+(214, 12, 129, '84102673-Requirement-KTP.jpg', '2015-06-08 04:08:39', '2015-06-08 04:08:39');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `roles`
+-- Table structure for table `roles`
 --
 
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `roles` (
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `description` tinytext,
-  `organization_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `organization_id` (`organization_id`),
-  KEY `fk_organization_id_idx` (`organization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+  `organization_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `roles`
+-- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`id`, `name`, `description`, `organization_id`) VALUES
@@ -719,11 +794,11 @@ INSERT INTO `roles` (`id`, `name`, `description`, `organization_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `services`
+-- Table structure for table `services`
 --
 
-CREATE TABLE IF NOT EXISTS `services` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `services` (
+  `id` int(11) NOT NULL,
   `name` varchar(150) NOT NULL COMMENT 'Nama servis',
   `category` int(11) NOT NULL DEFAULT '1' COMMENT 'Kategori service, seperti pelayanan atau yg lain',
   `estimated_days` int(11) DEFAULT NULL COMMENT 'waktu yg dibutuhkan 1 service',
@@ -732,13 +807,11 @@ CREATE TABLE IF NOT EXISTS `services` (
   `form_pembayaran` text COMMENT 'Form pembayaran yang akan digunakan untuk generate form pembayaran',
   `is_active` int(1) DEFAULT '1',
   `database` varchar(100) NOT NULL,
-  `tabel` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_organization_id_idx` (`organization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+  `tabel` varchar(100) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `services`
+-- Dumping data for table `services`
 --
 
 INSERT INTO `services` (`id`, `name`, `category`, `estimated_days`, `organization_id`, `form_perizinan`, `form_pembayaran`, `is_active`, `database`, `tabel`) VALUES
@@ -746,30 +819,27 @@ INSERT INTO `services` (`id`, `name`, `category`, `estimated_days`, `organizatio
 (4, 'Izin Gangguan (Hinder Ordonantie/HO)', 1, 14, 1, NULL, NULL, 1, 'riset_operational', 'srv_general'),
 (5, 'Izin Tempat Usaha - Izin Baru', 1, 10, 1, NULL, NULL, 1, 'riset_operational', 'srv_general'),
 (6, 'Izin Mendirikan Bangunan (IMB) - Izin Baru', 1, 14, 1, NULL, NULL, 1, 'riset_operational', 'srv_general'),
-(7, 'Izin Generic', 1, 14, 1, NULL, NULL, 1, 'riset_operasional', 'srv_praktek_dokter_generic');
+(7, 'Izin Membuat Gangguan', 1, 20, 1, NULL, NULL, 1, 'riset_operational', 'srv_general');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `service_execution`
+-- Table structure for table `service_execution`
 --
 
-CREATE TABLE IF NOT EXISTS `service_execution` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `service_execution` (
+  `id` int(11) NOT NULL,
   `service_id` int(11) NOT NULL,
   `token` varchar(100) NOT NULL COMMENT 'di generate untuk pembeda tiap request perizinan',
   `status` int(1) NOT NULL DEFAULT '0' COMMENT '0 : belum\\n1 : sudah selesai\\n2 : force reject',
   `description` text COMMENT 'Deskripsi kondisi selesai',
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `customer_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `token_UNIQUE` (`token`),
-  KEY `fk_service_id_idx` (`service_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='setiap row mewakilkan 1 pemohon dengan token yang unique' AUTO_INCREMENT=93 ;
+  `customer_id` int(11) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1 COMMENT='setiap row mewakilkan 1 pemohon dengan token yang unique';
 
 --
--- Dumping data untuk tabel `service_execution`
+-- Dumping data for table `service_execution`
 --
 
 INSERT INTO `service_execution` (`id`, `service_id`, `token`, `status`, `description`, `updated_at`, `created_at`, `customer_id`) VALUES
@@ -863,33 +933,93 @@ INSERT INTO `service_execution` (`id`, `service_id`, `token`, `status`, `descrip
 (88, 4, '00000043', 0, '', '2014-12-03 02:13:14', '2014-11-21 02:13:14', 17),
 (89, 5, '00000044', 0, '', '2014-12-03 02:13:30', '2014-12-03 02:13:30', 17),
 (90, 6, '00000045', 0, '', '2014-12-03 02:14:05', '2014-12-03 02:14:05', 17),
-(91, 2, '24063578', 0, '', '2015-04-13 08:05:54', '2015-04-13 08:05:54', 18),
-(92, 7, '24178693', 0, '', '2015-04-23 05:57:38', '2015-04-23 05:57:38', 18);
+(91, 6, '28790513', 0, '', '2015-06-06 16:55:20', '2015-06-06 16:55:20', 18),
+(92, 4, '94105876', 0, '', '2015-06-07 19:49:43', '2015-06-07 19:49:43', 18),
+(93, 2, '94086573', 0, '', '2015-06-07 21:51:04', '2015-06-07 21:51:04', 18),
+(94, 2, '24563197', 0, '', '2015-06-07 21:51:20', '2015-06-07 21:51:20', 18),
+(95, 2, '68520437', 0, '', '2015-06-07 21:51:36', '2015-06-07 21:51:36', 18),
+(96, 2, '98013567', 0, '', '2015-06-07 21:53:04', '2015-06-07 21:53:04', 18),
+(97, 4, '15498206', 0, '', '2015-06-07 21:53:04', '2015-06-07 21:53:04', 18),
+(98, 5, '14703256', 0, '', '2015-06-07 21:53:04', '2015-06-07 21:53:04', 18),
+(99, 6, '17920456', 0, '', '2015-06-07 21:53:04', '2015-06-07 21:53:04', 18),
+(100, 5, '69720358', 0, '', '2015-06-07 21:53:04', '2015-06-07 21:53:04', 18),
+(101, 7, '72398041', 0, '', '2015-06-07 22:00:36', '2015-06-07 22:00:36', 18),
+(102, 7, '69437015', 0, '', '2015-06-07 22:00:47', '2015-06-07 22:00:47', 18),
+(103, 7, '47586320', 0, '', '2015-06-07 22:01:14', '2015-06-07 22:01:14', 18),
+(104, 7, '15937862', 0, '', '2015-06-07 22:03:48', '2015-06-07 22:03:48', 18),
+(105, 7, '46018325', 0, '', '2015-06-07 22:12:32', '2015-06-07 22:12:32', 18),
+(106, 2, '59284137', 0, '', '2015-06-07 22:14:13', '2015-06-07 22:14:13', 18),
+(107, 2, '05786913', 0, '', '2015-06-07 22:14:31', '2015-06-07 22:14:31', 18),
+(108, 4, '92837064', 0, '', '2015-06-07 22:14:31', '2015-06-07 22:14:31', 18),
+(109, 5, '24078135', 0, '', '2015-06-07 22:14:31', '2015-06-07 22:14:31', 18),
+(110, 6, '03819764', 0, '', '2015-06-07 22:14:31', '2015-06-07 22:14:31', 18),
+(111, 5, '28047913', 0, '', '2015-06-07 22:14:31', '2015-06-07 22:14:31', 18),
+(112, 2, '08967541', 0, '', '2015-06-07 22:16:25', '2015-06-07 22:16:25', 18),
+(113, 4, '40368279', 0, '', '2015-06-07 22:16:25', '2015-06-07 22:16:25', 18),
+(114, 5, '53904861', 0, '', '2015-06-07 22:16:25', '2015-06-07 22:16:25', 18),
+(115, 6, '36208194', 0, '', '2015-06-07 22:16:25', '2015-06-07 22:16:25', 18),
+(116, 5, '65879403', 0, '', '2015-06-07 22:16:25', '2015-06-07 22:16:25', 18),
+(117, 5, '84613257', 0, '', '2015-06-08 03:07:00', '2015-06-08 03:07:00', 18),
+(118, 2, '63024587', 0, '', '2015-06-08 03:07:00', '2015-06-08 03:07:00', 18),
+(119, 5, '12854367', 0, '', '2015-06-08 03:11:42', '2015-06-08 03:11:42', 18),
+(120, 2, '70521498', 0, '', '2015-06-08 03:11:42', '2015-06-08 03:11:42', 18),
+(121, 5, '01289673', 0, '', '2015-06-08 03:13:01', '2015-06-08 03:13:01', 18),
+(122, 2, '81324605', 0, '', '2015-06-08 03:13:01', '2015-06-08 03:13:01', 18),
+(123, 5, '64918275', 0, '', '2015-06-08 03:14:28', '2015-06-08 03:14:28', 18),
+(124, 2, '36420781', 0, '', '2015-06-08 03:14:28', '2015-06-08 03:14:28', 18),
+(125, 5, '96831254', 0, '', '2015-06-08 03:15:12', '2015-06-08 03:15:12', 18),
+(126, 2, '45608271', 0, '', '2015-06-08 03:15:12', '2015-06-08 03:15:12', 18),
+(127, 7, '57612938', 0, '', '2015-06-08 03:39:49', '2015-06-08 03:39:49', 18),
+(128, 5, '96357482', 0, '', '2015-06-08 04:08:39', '2015-06-08 04:08:39', 18),
+(129, 6, '84102673', 0, '', '2015-06-08 04:08:39', '2015-06-08 04:08:39', 18);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `service_requirements`
+-- Table structure for table `service_prequisites`
 --
 
-CREATE TABLE IF NOT EXISTS `service_requirements` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `service_prequisites` (
+  `id` int(11) NOT NULL,
+  `parent_token` varchar(100) NOT NULL,
+  `prequisite_token` varchar(100) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `service_prequisites`
+--
+
+INSERT INTO `service_prequisites` (`id`, `parent_token`, `prequisite_token`) VALUES
+(5, '08967541', '40368279'),
+(8, '08967541', '53904861'),
+(10, '08967541', '36208194'),
+(11, '08967541', '65879403'),
+(41, '6980632', '6'),
+(42, '3136756', '6'),
+(43, '841116', '6'),
+(44, '96831254', '45608271'),
+(45, '4305878', '5'),
+(46, '96357482', '84102673');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service_requirements`
+--
+
+CREATE TABLE `service_requirements` (
+  `id` int(11) NOT NULL,
   `service_id` int(11) NOT NULL,
   `requirement_id` int(11) NOT NULL COMMENT 'Nama requirement yang akan di tampilkan sebagai list requirement.\\nJelas dan well formatted',
   `description` text COMMENT 'untuk requirement yg masih memiliki cabang',
   `is_required` int(1) DEFAULT '0' COMMENT 'Apakah harus di lengkapi atau tidak',
   `type_input` int(1) NOT NULL DEFAULT '1' COMMENT 'Ini jenis tipe field yang akan di generate. Terdapat 3 jenis\\n- file : untuk upload file\\n- input : untuk input berupa ketikan\\n- text : sekedar text, (informasi tertentu berupa tulisan) . Secara default, name akan menjadi isi dari informasi tersebut\\n\\nfile yang bisa di upload berupa pdf/jpeg',
   `type_output` int(1) NOT NULL DEFAULT '1',
-  `field` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_service_id_idx` (`service_id`),
-  KEY `fk_sr_to_id_idx` (`type_input`),
-  KEY `fk_sr_to_id_idx1` (`type_output`),
-  KEY `fk_sr_requirement_id_idx` (`requirement_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='list requirement untuk sebuah service\n' AUTO_INCREMENT=14 ;
+  `field` varchar(45) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1 COMMENT='list requirement untuk sebuah service\n';
 
 --
--- Dumping data untuk tabel `service_requirements`
+-- Dumping data for table `service_requirements`
 --
 
 INSERT INTO `service_requirements` (`id`, `service_id`, `requirement_id`, `description`, `is_required`, `type_input`, `type_output`, `field`) VALUES
@@ -904,29 +1034,27 @@ INSERT INTO `service_requirements` (`id`, `service_id`, `requirement_id`, `descr
 (10, 6, 16, 'Untuk bangunan yang dapat menimbulkan dampak penting terhadap lingkungan sesuai dengan ketentuan perundang-undangan.', 0, 1, 1, ''),
 (11, 6, 1, 'Kartu Tanda Penduduk yang masih berlaku', 1, 1, 2, ''),
 (12, 6, 18, 'Map Tulang Kertas:</br>\r\n&nbsp;&nbsp;- Warna merah untuk rumah tinggal</br>\r\n&nbsp;&nbsp;- Warna kuning untuk bangunan usaha</br>\r\n&nbsp;&nbsp;- Warna biru untuk bangunan pendidikan sosial dan perkantoran', 0, 3, 3, ''),
-(13, 7, 1, '', 1, 1, 1, '');
+(14, 5, 11, 'Deskripsi Akta', 1, 2, 3, '');
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `settings`
+-- Table structure for table `settings`
 --
 
-CREATE TABLE IF NOT EXISTS `settings` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `settings` (
+  `id` int(11) NOT NULL,
   `logo` varchar(100) DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL,
   `title_color` varchar(20) NOT NULL,
   `header_image` varchar(100) DEFAULT NULL,
   `background_image` varchar(100) DEFAULT NULL,
   `organization_id` int(2) DEFAULT NULL,
-  `is_active` int(1) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `fk_setting_organization_id_idx` (`organization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+  `is_active` int(1) DEFAULT '0'
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `settings`
+-- Dumping data for table `settings`
 --
 
 INSERT INTO `settings` (`id`, `logo`, `title`, `title_color`, `header_image`, `background_image`, `organization_id`, `is_active`) VALUES
@@ -935,41 +1063,18 @@ INSERT INTO `settings` (`id`, `logo`, `title`, `title_color`, `header_image`, `b
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `srv_<nama_service>`
+-- Table structure for table `type_input`
 --
 
-CREATE TABLE IF NOT EXISTS `srv_<nama_service>` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `service_id` int(11) DEFAULT NULL,
-  `token` varchar(45) NOT NULL DEFAULT '0',
-  `status` int(1) DEFAULT NULL COMMENT 'status service execution',
-  `comment` text,
-  `customer_id` int(11) NOT NULL,
-  `hasil_pembahasan` text,
-  `hasil_survey` tinytext,
-  `surat_izin` tinyint(4) DEFAULT NULL,
-  `retribusi` int(20) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `type_input`
---
-
-CREATE TABLE IF NOT EXISTS `type_input` (
+CREATE TABLE `type_input` (
   `id` int(2) NOT NULL,
   `name` varchar(45) DEFAULT NULL COMMENT 'Ini jenis tipe field yang akan di generate. Terdapat 3 jenis\\n- file : untuk upload file\\n- input : untuk input berupa ketikan\\n- text : sekedar text, (informasi tertentu berupa tulisan) . Secara default, name akan menjadi isi dari informasi tersebut\\n\\nfile yang bisa di upload berupa pdf/jpeg',
   `value` varchar(20) DEFAULT NULL,
-  `description` text,
-  PRIMARY KEY (`id`)
+  `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='jenis input yang dibutuhkan untuk generate form';
 
 --
--- Dumping data untuk tabel `type_input`
+-- Dumping data for table `type_input`
 --
 
 INSERT INTO `type_input` (`id`, `name`, `value`, `description`) VALUES
@@ -980,19 +1085,18 @@ INSERT INTO `type_input` (`id`, `name`, `value`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `type_output`
+-- Table structure for table `type_output`
 --
 
-CREATE TABLE IF NOT EXISTS `type_output` (
+CREATE TABLE `type_output` (
   `id` int(2) NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `value` varchar(45) DEFAULT NULL COMMENT 'Tipe yang akan digunakan untuk membuka file tersebut. Digunakan sebagai atribut Content-type pada header.\\n\\nYang tersedia\\nimage/jpeg\\napplication/pdf\\ntext/plain\\n',
-  `description` text,
-  PRIMARY KEY (`id`)
+  `description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='tipe output yang dibutuhkan untuk melihat data yang telah di input';
 
 --
--- Dumping data untuk tabel `type_output`
+-- Dumping data for table `type_output`
 --
 
 INSERT INTO `type_output` (`id`, `name`, `value`, `description`) VALUES
@@ -1004,20 +1108,18 @@ INSERT INTO `type_output` (`id`, `name`, `value`, `description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `units`
+-- Table structure for table `units`
 --
 
-CREATE TABLE IF NOT EXISTS `units` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `units` (
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL DEFAULT 'No Name',
   `description` text,
-  `organization_id` int(11) DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `fk_organization_id_idx` (`organization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+  `organization_id` int(11) DEFAULT '1'
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `units`
+-- Dumping data for table `units`
 --
 
 INSERT INTO `units` (`id`, `name`, `description`, `organization_id`) VALUES
@@ -1038,17 +1140,16 @@ INSERT INTO `units` (`id`, `name`, `description`, `organization_id`) VALUES
 (31, 'Sub Bidang Kerjasama', '', 1),
 (32, 'Sub Bidang Pengkajian & Pengaduan', '', 1),
 (33, 'Sub Bidang Pelayanan Perizinan & Non Perizinan', '', 1),
-(34, 'External Unit', 'Unit untuk user dari dinas luar seperti dinas pariwisata dll.', 1),
-(35, 'Generic Unit', 'Let''s me try this one.', 1);
+(34, 'External Unit', 'Unit untuk user dari dinas luar seperti dinas pariwisata dll.', 1);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `username` varchar(45) NOT NULL,
   `password` varchar(255) NOT NULL,
   `name` varchar(45) NOT NULL DEFAULT 'No Name',
@@ -1058,50 +1159,43 @@ CREATE TABLE IF NOT EXISTS `users` (
   `unit_id` int(11) NOT NULL,
   `organization_id` int(11) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL COMMENT 'log login terakhir',
-  `remember_token` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username_UNIQUE` (`username`),
-  KEY `fk_unit_id_idx` (`unit_id`),
-  KEY `fk_organization_id_idx` (`organization_id`),
-  KEY `fk_users_position_id_idx` (`position_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+  `remember_token` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `name`, `email`, `phone`, `position_id`, `unit_id`, `organization_id`, `last_login`, `remember_token`) VALUES
-(12, 'super', '$2y$10$51KgZFr3woDSGqRh4BcnQObtxJeqq/wllI4XeRQAAhno5D3BB9iqe', 'Super User', 'punyagama@gmail.com', '', 1, 34, 1, NULL, 'vEaFhisZg5RTLJ9s1kiEPvoMs3Ih9KQpcVULct3siDwZG5US1yLcKPLqikCS'),
+(12, 'super', '$2y$10$51KgZFr3woDSGqRh4BcnQObtxJeqq/wllI4XeRQAAhno5D3BB9iqe', 'Super User', 'punyagama@gmail.com', '', 1, 34, 1, NULL, 'Zs2ENvMfmNECr845WUUwvnfwROuyTNPjwfKH0k2eSyolektVHmDAQj3yfRwW'),
 (13, 'marta', '$2y$10$lwdeD8B2uIuWRpMjXjAEuOGpP.Rbka8W70tnbWxvbXi7VNAGHSFwS', 'Marta Minanda, ST., MT', 'marta@bpmdptsp.go.id', '', 1, 17, 1, NULL, NULL),
 (14, 'sovita', '$2y$10$AwJz6qAWSn2hi27NXFoBh.zPPOVqx3rg.W40nT.R8nWEQ6db.DQgO', 'Hj. Sovita Yenuris, SH', 'sovita@bpmdptsp.go.id', '', 2, 18, 1, NULL, NULL),
 (15, 'fitra', '$2y$10$zJsyAfuD6L4GRR9pLBTEPeW7V8Bx2qzhGnzr1CTER4EWTYlfaFX9C', 'Fitra Harianto, ST', 'fitra@bpmdptsp.go.id', '', 1, 25, 1, NULL, NULL),
-(16, 'riza', '$2y$10$4JLd3WK7b7X0N8nphw/7S.xgIHdizSiArIc.UfRgOqLD6YFSscUBi', 'Riza Andriani, SIP', 'riza@bpmdptsp.go.id', '', 1, 33, 1, NULL, NULL),
-(17, 'cici', '$2y$10$/YBXH3nc1beUAE517EKShOBtt8f3ul6EuIjV8OzPWkOoYzUsc.OfG', 'Cici Elita, A.Md', 'cici@gmail.com', '', 5, 33, 1, NULL, 'YI83CDy7bEmd9H7U9WMhLUywQJlieN9Dbnu9oEi4w38mZYplXDzGHSSCjeaK'),
+(16, 'riza', '$2y$10$7jDZTFrTxwZ6WdezHzK/NOXTOH1HGRzhfaB7ypQcKJkriPgLAxd.6', 'Riza Andriani, SIP', 'riza@bpmdptsp.go.id', '', 1, 33, 1, NULL, NULL),
+(17, 'cici', '$2y$10$SojG6swuOjudGZA2Mworj.OaCfqZ9U78BMkER5a8xgFQodB/XCN3a', 'Cici Elita, A.Md', 'cici@gmail.com', '', 5, 33, 1, NULL, 'IsRqbl5x539kuiPJI4oBFDWWVuSaa11HVvJUXEIE9BO1Me8AuuPflrY1migk'),
 (18, 'yesi', '$2y$10$asc861eNjEJAtI9P8ipKk.W.Qp3uinPfV3PpnSb1LBDNLlwz2MwSS', 'Yesi Mursida, A.Md', 'yesi@gmail.com', '', 5, 33, 1, NULL, NULL),
 (19, 'zulyendri', '$2y$10$hzCSaB12GPap97w.er8pk.8Dj7ywrDDFCqYO0ftghS9bPC9lPqh4m', 'Zulyendri', 'zulyendri@gmail.com', '', 5, 33, 1, NULL, NULL),
 (20, 'hendrison', '$2y$10$1jp9xKKmSPVwhmXFanFI4uqK/3tBbxE/NnusfLIsJORarajUJYN.C', 'Hendrison, SE', 'hendrison@gmail.com', '', 5, 33, 1, NULL, NULL),
 (21, 'robby', '$2y$10$qDX3abdbZoKedNuIfPI/beA9gFAXvht1FRQuuMvW3CqoYKljrIXHS', 'Robby Hafanos, M.CIO', 'robby@gmail.com', '', 5, 33, 1, NULL, NULL),
 (22, 'yusmaridon', '$2y$10$cJi.mShLo0Q9VkTsTaNvd.CcKaJrEnf8NjLAq1h/9R1K/VHBadzDa', 'Yusmaridon', 'yusmaridon@gmail.com', '', 5, 32, 1, NULL, NULL),
-(23, 'roswita', '$2y$10$SsQqmBWvrUYnIH19VEwZ6.vooWi5WZwisd51YP5xYnNOeKpuG6Tvi', 'Roswita', 'roswita@gmail.com', '', 5, 33, 1, NULL, NULL),
+(23, 'roswita', '$2y$10$kiFxE4fVf1XN0x/aKm9/zetZ4N/4Sz5e331.zs0KSzxfegis30LiG', 'Roswita', 'roswita@gmail.com', '', 5, 33, 1, NULL, NULL),
 (24, 'perindag', '$2y$10$syAU8jNM2Jm3FpYqNtW43.ePkgRgSD56gHQEZVk5JvhKJI5YZWDQ6', 'Tim Teknis Dinas Perindag', 'perindag@gmail.com', '', 1, 34, 1, NULL, NULL),
 (25, 'kesehatan', '$2y$10$vykq3F3y/gOoJHjsfmpyhOECU0wXLI6qfgQ0vjxtrnGOy7HcZcORa', 'Tim Teknis Dinas Kesehatan', 'kesehatan@gmail.com', '', 1, 34, 1, NULL, NULL),
-(26, 'pariwisata', '$2y$10$FVzJmrneQ7TRuFHCeaGP/e8usq/tU6FL8tD9vWlZOqKpTNl2cT6X2', 'Tim Teknis Dinas Pariwisata', 'pariwisata@gmail.com', '', 1, 34, 1, NULL, 'wvgUowL0OpSPB4o9vlID8PqLNnauRXt45wFcm2b8qk2RE79CpWmLSNhhx5aH'),
+(26, 'pariwisata', '$2y$10$o3XJ7aoPVOAr2M3mMeOKBesZ1DwJzx7yIV8pCdyzRMvyq2.OHVer6', 'Tim Teknis Dinas Pariwisata', 'pariwisata@gmail.com', '', 1, 34, 1, NULL, NULL),
 (27, 'dtrk', '$2y$10$glmICRdPwka6VakaR6W9Mef0yjz8De8MuBemZEP2As9xB/qoZloYa', 'Tim Teknis (DTRK)', 'dtrk@gmail.com', '', 1, 34, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `user_logs`
+-- Table structure for table `user_logs`
 --
 
-CREATE TABLE IF NOT EXISTS `user_logs` (
+CREATE TABLE `user_logs` (
   `id` int(11) NOT NULL,
   `ip` varchar(20) DEFAULT NULL,
   `browser` text,
   `user_id` int(11) DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_ul_user_id_idx` (`user_id`)
+  `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1109,7 +1203,7 @@ CREATE TABLE IF NOT EXISTS `user_logs` (
 --
 -- Stand-in structure for view `v_bps`
 --
-CREATE TABLE IF NOT EXISTS `v_bps` (
+CREATE TABLE `v_bps` (
 `id` int(11)
 ,`bp_id` int(11)
 ,`se_id` int(11)
@@ -1122,50 +1216,339 @@ CREATE TABLE IF NOT EXISTS `v_bps` (
 ,`comment` text
 ,`name` varchar(100)
 );
+
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `xor_status`
+-- Table structure for table `xor_status`
 --
 
-CREATE TABLE IF NOT EXISTS `xor_status` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `xor_status` (
+  `id` int(11) NOT NULL,
   `se_id` int(11) NOT NULL,
   `value` varchar(45) DEFAULT NULL,
-  `status` int(1) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `fk_xor_se_id_idx` (`se_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `status` int(1) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Struktur untuk view `v_bps`
+-- Structure for view `v_bps`
 --
 DROP TABLE IF EXISTS `v_bps`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_bps` AS select `a`.`id` AS `id`,`a`.`bp_id` AS `bp_id`,`a`.`se_id` AS `se_id`,`a`.`service_id` AS `service_id`,`a`.`status` AS `status`,`a`.`started_by` AS `started_by`,`a`.`started_time` AS `started_time`,`a`.`finished_by` AS `finished_by`,`a`.`finished_time` AS `finished_time`,`a`.`comment` AS `comment`,`b`.`name` AS `name` from (`base_process_state` `a` left join `base_process` `b` on((`a`.`bp_id` = `b`.`id`))) order by `a`.`se_id`,`a`.`id`;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Indexes for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `assigned_roles`
+-- Indexes for table `assigned_roles`
+--
+ALTER TABLE `assigned_roles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_ar_user_id_idx` (`user_id`),
+  ADD KEY `fk_ar_role_id_idx` (`role_id`);
+
+--
+-- Indexes for table `base_process`
+--
+ALTER TABLE `base_process`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_service_id_idx` (`service_id`),
+  ADD KEY `fk_unit_i_idx` (`unit_id`);
+
+--
+-- Indexes for table `base_process_output`
+--
+ALTER TABLE `base_process_output`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpo_ti_id_idx` (`type_input`),
+  ADD KEY `fk_bpo_bp_id_idx` (`bp_id`),
+  ADD KEY `fk_bpo_to_id_idx` (`type_output`);
+
+--
+-- Indexes for table `base_process_state`
+--
+ALTER TABLE `base_process_state`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bp_id_idx` (`bp_id`),
+  ADD KEY `fk_service_id_idx` (`service_id`),
+  ADD KEY `fk_started_by_idx` (`started_by`),
+  ADD KEY `fk_finished_by_idx` (`finished_by`),
+  ADD KEY `fk_se_id_idx` (`se_id`);
+
+--
+-- Indexes for table `base_process_state_output`
+--
+ALTER TABLE `base_process_state_output`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_bpso_bps_id_idx` (`bps_id`),
+  ADD KEY `fk_bpso_se_id_idx` (`se_id`),
+  ADD KEY `fk_bpso_bpo_id_idx` (`bpo_id`);
+
+--
+-- Indexes for table `organizations`
+--
+ALTER TABLE `organizations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name_UNIQUE` (`name`);
+
+--
+-- Indexes for table `permission_role`
+--
+ALTER TABLE `permission_role`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_pr_role_id` (`role_id`),
+  ADD KEY `fk_pr_permission_id_idx` (`permission_id`);
+
+--
+-- Indexes for table `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_position_organization_id_idx` (`organization_id`);
+
+--
+-- Indexes for table `prequisites`
+--
+ALTER TABLE `prequisites`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `requirements`
+--
+ALTER TABLE `requirements`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `requirement_storages`
+--
+ALTER TABLE `requirement_storages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_requirement_id_idx` (`requirement_id`),
+  ADD KEY `fk_rs_se_id_idx` (`se_id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `organization_id` (`organization_id`),
+  ADD KEY `fk_organization_id_idx` (`organization_id`);
+
+--
+-- Indexes for table `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_organization_id_idx` (`organization_id`);
+
+--
+-- Indexes for table `service_execution`
+--
+ALTER TABLE `service_execution`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `token_UNIQUE` (`token`),
+  ADD KEY `fk_service_id_idx` (`service_id`);
+
+--
+-- Indexes for table `service_prequisites`
+--
+ALTER TABLE `service_prequisites`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `service_requirements`
+--
+ALTER TABLE `service_requirements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_service_id_idx` (`service_id`),
+  ADD KEY `fk_sr_to_id_idx` (`type_input`),
+  ADD KEY `fk_sr_to_id_idx1` (`type_output`),
+  ADD KEY `fk_sr_requirement_id_idx` (`requirement_id`);
+
+--
+-- Indexes for table `settings`
+--
+ALTER TABLE `settings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_setting_organization_id_idx` (`organization_id`);
+
+--
+-- Indexes for table `type_input`
+--
+ALTER TABLE `type_input`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `type_output`
+--
+ALTER TABLE `type_output`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `units`
+--
+ALTER TABLE `units`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_organization_id_idx` (`organization_id`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username_UNIQUE` (`username`),
+  ADD KEY `fk_unit_id_idx` (`unit_id`),
+  ADD KEY `fk_organization_id_idx` (`organization_id`),
+  ADD KEY `fk_users_position_id_idx` (`position_id`);
+
+--
+-- Indexes for table `user_logs`
+--
+ALTER TABLE `user_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_ul_user_id_idx` (`user_id`);
+
+--
+-- Indexes for table `xor_status`
+--
+ALTER TABLE `xor_status`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_xor_se_id_idx` (`se_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `assigned_roles`
+--
+ALTER TABLE `assigned_roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+--
+-- AUTO_INCREMENT for table `base_process`
+--
+ALTER TABLE `base_process`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=50;
+--
+-- AUTO_INCREMENT for table `base_process_output`
+--
+ALTER TABLE `base_process_output`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT for table `base_process_state`
+--
+ALTER TABLE `base_process_state`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=137;
+--
+-- AUTO_INCREMENT for table `base_process_state_output`
+--
+ALTER TABLE `base_process_state_output`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `organizations`
+--
+ALTER TABLE `organizations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `permission_role`
+--
+ALTER TABLE `permission_role`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=121;
+--
+-- AUTO_INCREMENT for table `prequisites`
+--
+ALTER TABLE `prequisites`
+  MODIFY `id` int(12) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=16;
+--
+-- AUTO_INCREMENT for table `requirements`
+--
+ALTER TABLE `requirements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `requirement_storages`
+--
+ALTER TABLE `requirement_storages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=215;
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=23;
+--
+-- AUTO_INCREMENT for table `services`
+--
+ALTER TABLE `services`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+--
+-- AUTO_INCREMENT for table `service_execution`
+--
+ALTER TABLE `service_execution`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=130;
+--
+-- AUTO_INCREMENT for table `service_prequisites`
+--
+ALTER TABLE `service_prequisites`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=47;
+--
+-- AUTO_INCREMENT for table `service_requirements`
+--
+ALTER TABLE `service_requirements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=15;
+--
+-- AUTO_INCREMENT for table `settings`
+--
+ALTER TABLE `settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `units`
+--
+ALTER TABLE `units`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=35;
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
+--
+-- AUTO_INCREMENT for table `xor_status`
+--
+ALTER TABLE `xor_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `assigned_roles`
 --
 ALTER TABLE `assigned_roles`
   ADD CONSTRAINT `fk_ar_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_ar_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `base_process`
+-- Constraints for table `base_process`
 --
 ALTER TABLE `base_process`
   ADD CONSTRAINT `fk_bp_service_id` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_bp_unit_id` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `base_process_output`
+-- Constraints for table `base_process_output`
 --
 ALTER TABLE `base_process_output`
   ADD CONSTRAINT `fk_bpo_bp_id` FOREIGN KEY (`bp_id`) REFERENCES `base_process` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1173,7 +1556,7 @@ ALTER TABLE `base_process_output`
   ADD CONSTRAINT `fk_bpo_to_id` FOREIGN KEY (`type_output`) REFERENCES `type_output` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `base_process_state`
+-- Constraints for table `base_process_state`
 --
 ALTER TABLE `base_process_state`
   ADD CONSTRAINT `fk_bps_bp_id` FOREIGN KEY (`bp_id`) REFERENCES `base_process` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1183,7 +1566,7 @@ ALTER TABLE `base_process_state`
   ADD CONSTRAINT `fk_bps_started_by` FOREIGN KEY (`started_by`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `base_process_state_output`
+-- Constraints for table `base_process_state_output`
 --
 ALTER TABLE `base_process_state_output`
   ADD CONSTRAINT `fk_bpso_bpo_id` FOREIGN KEY (`bpo_id`) REFERENCES `base_process_output` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1191,45 +1574,45 @@ ALTER TABLE `base_process_state_output`
   ADD CONSTRAINT `fk_bpso_se_id` FOREIGN KEY (`se_id`) REFERENCES `service_execution` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `permission_role`
+-- Constraints for table `permission_role`
 --
 ALTER TABLE `permission_role`
   ADD CONSTRAINT `fk_pr_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_pr_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `positions`
+-- Constraints for table `positions`
 --
 ALTER TABLE `positions`
   ADD CONSTRAINT `fk_position_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `requirement_storages`
+-- Constraints for table `requirement_storages`
 --
 ALTER TABLE `requirement_storages`
   ADD CONSTRAINT `fk_rs_requirement_id` FOREIGN KEY (`requirement_id`) REFERENCES `service_requirements` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_rs_se_id` FOREIGN KEY (`se_id`) REFERENCES `service_execution` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `roles`
+-- Constraints for table `roles`
 --
 ALTER TABLE `roles`
   ADD CONSTRAINT `fk_roles_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `services`
+-- Constraints for table `services`
 --
 ALTER TABLE `services`
   ADD CONSTRAINT `fk_service_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `service_execution`
+-- Constraints for table `service_execution`
 --
 ALTER TABLE `service_execution`
   ADD CONSTRAINT `fk_se_service_id` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `service_requirements`
+-- Constraints for table `service_requirements`
 --
 ALTER TABLE `service_requirements`
   ADD CONSTRAINT `fk_sr_requirement_id` FOREIGN KEY (`requirement_id`) REFERENCES `requirements` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -1238,19 +1621,19 @@ ALTER TABLE `service_requirements`
   ADD CONSTRAINT `fk_sr_to_id` FOREIGN KEY (`type_output`) REFERENCES `type_output` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `settings`
+-- Constraints for table `settings`
 --
 ALTER TABLE `settings`
   ADD CONSTRAINT `fk_setting_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `units`
+-- Constraints for table `units`
 --
 ALTER TABLE `units`
   ADD CONSTRAINT `fk_units_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `users`
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_organization_id` FOREIGN KEY (`organization_id`) REFERENCES `organizations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -1258,17 +1641,13 @@ ALTER TABLE `users`
   ADD CONSTRAINT `fk_users_unit_id` FOREIGN KEY (`unit_id`) REFERENCES `units` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Ketidakleluasaan untuk tabel `user_logs`
+-- Constraints for table `user_logs`
 --
 ALTER TABLE `user_logs`
   ADD CONSTRAINT `fk_ul_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `xor_status`
+-- Constraints for table `xor_status`
 --
 ALTER TABLE `xor_status`
   ADD CONSTRAINT `fk_xor_se_id` FOREIGN KEY (`se_id`) REFERENCES `service_execution` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

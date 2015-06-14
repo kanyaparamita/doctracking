@@ -77,6 +77,7 @@ class ServiceController extends \BaseController {
 	{
 		$service = Service::find($id);
 		$bp = BaseProcess::where('service_id', '=', $id)->get();
+		$pq = Prequisite::where('parent_id', '=', $id)->get();
 		$requirements = ServiceRequirement::where('service_id', '=', $id)->get();
 		if(is_null($service)) {
 			$services = Service::all();
@@ -87,6 +88,7 @@ class ServiceController extends \BaseController {
 			return View::make('services.show')
 				->with('service', $service)
 				->with('bp', $bp)
+				->with('pq', $pq)
 				->with('requirements', $requirements);
 		}
 	}

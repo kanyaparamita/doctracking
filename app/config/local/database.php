@@ -24,7 +24,7 @@ return array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
 			'database'  => 'riset_doctrack',
-			'username'  => 'root',
+			'username'  => 'ahmad',
 			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',

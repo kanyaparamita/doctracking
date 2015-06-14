@@ -10,7 +10,7 @@ class OutsiderController extends \BaseController {
                     ->with('services', $services);
     }
 
-    public function showRequirement($id) {
+    public function showRequirement($id, $token) {
         if (Session::has('customer_name') == 0) {
             return Redirect::to('login');
         }
@@ -19,9 +19,53 @@ class OutsiderController extends \BaseController {
                                             ->where('service_requirements.service_id', '=', $id)
                                             ->leftJoin('requirements', 'service_requirements.requirement_id', '=', 'requirements.id')
                                             ->get();
+
+        // Prequisites                           
+        $additionalReq = ServicePrequisite::where('parent_token', '=', $token)->get(); 
+        $preq = array();                       
+        $i = 0;    
+        foreach ($additionalReq as $require) {
+            array_push($preq ,ServiceRequirement::select('service_requirements.*', 'requirements.value as name')
+                                            ->where('service_requirements.service_id', '=', $require->prequisite_token)
+                                            ->leftJoin('requirements', 'service_requirements.requirement_id', '=', 'requirements.id')
+                                            ->get());
+            $i++;
+        }
+
+        //Session::flash('message', $preq[0]);
+
         return View::make('outsiders.requirement')
                     ->with('services', $service)
-                    ->with('requirements', $requirements);
+                    ->with('requirements', $requirements)
+                    ->with('additionalReq', $preq)
+                    ->with('token', $token);
+    }
+
+    public function showPrequisite($id) {
+        if (Session::has('customer_name') == 0) {
+            return Redirect::to('login');
+        }
+        $service = Service::find($id);
+        $prequisites = Prequisite::where('parent_id', '=', $id)->get();
+        return View::make('outsiders.prequisite')
+                    ->with('services', $service)
+                    ->with('prequisites', $prequisites);
+    }
+
+    public function savePrequisite($id, $prequisite_number) {
+        $prequisites = Prequisite::where('parent_id', '=', $id)->get();
+        $tempToken = rand(1000, 10000000);
+
+        for ($i= 1; $i <= $prequisite_number; $i++) { 
+            if(Input::get('status'.$i)){
+                $servicePre = new ServicePrequisite;
+                $servicePre->parent_token = $tempToken;
+                $servicePre->prequisite_token = $prequisites[$i-1]->prequisite_id;
+                $servicePre->save();
+            }
+        }
+
+        return Redirect::to('outsider/'.$id.'/requirements/'.$tempToken);
     }
 
     public function startService($id) {
@@ -87,9 +131,26 @@ class OutsiderController extends \BaseController {
         $dummy->status = 0;
         $dummy->save();
 
-        return Redirect::to('outsider/details/'.$token);
+        return $token;
     }
 
+    public function startAllService($id, $token){
+        $baseToken = OutsiderController::startService($id);
+
+        $prequisites = Prequisite::where('parent_id', '=', $id)->get();
+        foreach ($prequisites as $prequisite) {
+            $preToken = OutsiderController::startService($prequisite->prequisite_id);
+
+            $servicePre = ServicePrequisite::where('parent_token', '=', $token)
+                                            ->where('prequisite_token', '=', $prequisite->prequisite_id)
+                                            ->first();
+            $servicePre->parent_token = $baseToken;
+            $servicePre->prequisite_token = $preToken;
+            $servicePre->save();   
+        }
+
+        return Redirect::to('outsider/details/'.$baseToken);
+    }
 
     public function detail($token = null)
     {
@@ -105,11 +166,12 @@ class OutsiderController extends \BaseController {
                                             ->leftJoin('units', 'base_process.unit_id', '=', 'units.id')
                                             ->orderBy('bp_id', 'ASC')
                                             ->get();
-
+            $prequisiteToken = ServicePrequisite::where('parent_token', '=', $token)->get();                               
             return View::make('outsiders.detail')
                     ->with('service', $service)
                     ->with('service_execution', $service_execution)
-                    ->with('base_process', $base_process);
+                    ->with('base_process', $base_process)
+                    ->with('preqToken', $prequisiteToken);
         }
         else {
             return View::make('error');

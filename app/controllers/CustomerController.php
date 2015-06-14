@@ -27,13 +27,14 @@ class CustomerController extends \BaseController {
             $customer = Customer::where('ktp', '=', $ktp)
                                 ->first();
 
-            if ($customer == null || Hash::check($customer->password, $password)) {
+            if ($customer == null || !Hash::check($password, $customer->password)) {
                 return Redirect::to('login')
                     ->with('message', 'Data yang anda masukkan tidak terdaftar');
             } else {
                 // simpan customer id ke session
                 Session::put('customer_id', $customer->id);
                 Session::put('customer_name', $customer->nama);
+                Session::put('alive', 1);
                 // redirect ke list service
                 return Redirect::to('outsider');
             }
@@ -72,6 +73,7 @@ class CustomerController extends \BaseController {
             // simpan customer id ke session
             Session::put('customer_id', $customer->id);
             Session::put('customer_name', $customer->nama);
+            Session::put('alive', 1);
             // redirect ke list service
             return Redirect::to('outsider');
         }

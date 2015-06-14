@@ -2072,5 +2072,50 @@
             "laravel",
             "roles"
         ]
+    },
+    {
+        "name": "reportico/laravel-reportico",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/reportico-web/laravel-reportico.git",
+            "reference": "dd39a37e4ad66071a6e6e75ca33c35424ca7ad31"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/reportico-web/laravel-reportico/zipball/dd39a37e4ad66071a6e6e75ca33c35424ca7ad31",
+            "reference": "dd39a37e4ad66071a6e6e75ca33c35424ca7ad31",
+            "shasum": ""
+        },
+        "require": {
+            "illuminate/support": "4.2.*",
+            "php": ">=5.4.0"
+        },
+        "time": "2015-04-12 09:34:34",
+        "type": "library",
+        "installation-source": "source",
+        "autoload": {
+            "classmap": [
+                "src/migrations",
+                "src/controllers"
+            ],
+            "files": [
+                "src/Reportico/Reportico/reportico.php"
+            ],
+            "psr-0": {
+                "Reportico\\Reportico\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Reportico",
+                "email": "info@reportico.org"
+            }
+        ]
     }
 ]

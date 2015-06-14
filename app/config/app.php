@@ -126,6 +126,7 @@ return array(
 		'Ludo237\Barcode\BarcodeServiceProvider',
 		'Zizaco\Entrust\EntrustServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
+		'Reportico\Reportico\ReporticoServiceProvider',
 	),
 
 	/*

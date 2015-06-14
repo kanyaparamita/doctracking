@@ -18,7 +18,7 @@
                                 {{ Form::select('service_id', $services, Input::old('service_id'), array('id' => 'list')) }}
                             </div>
                             <div class="da-form-col-2-8">
-                                {{ link_to('outsider/id/requirements', Lang::get('doctrack.o_service_action'), array('id'=>'link', 'class'=>'da-button blue')) }}
+                                {{ link_to('outsider/id/prequisites', Lang::get('doctrack.o_service_action'), array('id'=>'link', 'class'=>'da-button blue')) }}
                             </div>
                         </div>
                     </div>
@@ -33,7 +33,7 @@
         $(document).ready(function() {
 
             function updateLink() {
-                $('#link').attr('href', '/outsider/'+$('#list').val()+'/requirements');
+                $('#link').attr('href', 'outsider/'+$('#list').val()+'/prequisites');
             }
 
             updateLink();

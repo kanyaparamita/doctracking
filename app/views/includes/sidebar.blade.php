@@ -105,6 +105,7 @@
                     @endif
                     @if (Auth::user()->can('manage_service'))
                         <li><a href="{{ URL::to('services/') }}">{{Lang::get('doctrack.sb_m_service')}}</a></li>
+                        <li><a href="{{ URL::to('reportico') }}">{{Lang::get('doctrack.sb_m_report')}}</a></li>
                     @endif
                     @if (Auth::user()->can('manage_file'))
                         <li><a href="{{ URL::to('fm/') }}">{{ Lang::get('doctrack.sb_m_file')}}</a></li>

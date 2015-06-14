@@ -9,7 +9,8 @@
 		"barryvdh/elfinder-bundle": "dev-master",
 		"ludo237/barcode": "dev-master",
 		"zizaco/entrust": "1.2.*@dev",
-		"barryvdh/laravel-debugbar": "~1.8"
+		"barryvdh/laravel-debugbar": "~1.8",
+		"reportico/laravel-reportico": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

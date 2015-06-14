@@ -31,8 +31,13 @@
                                             echo 'On Progress';
                                             break;
 
-                                        case 1:
-                                            echo 'Finished';
+                                        case 1 || 3:
+                                            echo 'Finished<br>';
+                                            ?>
+                                            <a href="{{URL::to('index.php/reportico/mode/execute?project=imbz&target_format=PDF&report=izin_manado&external_param1=1')}}">
+                                                Cetak Surat Izin
+                                            </a>
+                                            <?php
                                             break;
 
                                         case 2:
@@ -60,6 +65,21 @@
                             <th>Tanggal Pengajuan</th>
                             <td>
                                 {{ date("d F Y   H:m:s", strtotime($service_execution->created_at)) }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Pelacakan Izin Prequisite</th>
+                            <td>
+                                <?php
+                                    if(count($preqToken) > 0){
+                                        foreach ($preqToken as $tokenPreq) {
+                                            echo '<a href="'.$tokenPreq->prequisite_token.'">'.$tokenPreq->prequisite_token.'</a>';
+                                        }
+                                    }
+                                    else{
+                                        echo 'Tidak ada izin prequisite';
+                                    }
+                                ?>
                             </td>
                         </tr>
                     </tbody>

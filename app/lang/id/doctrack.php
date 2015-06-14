@@ -32,6 +32,7 @@ return array(
     'requirement' => 'Persyaratan',
     'requirements' => 'Persyaratan',
     'stage' => 'Base Process',
+    'prequisite' => 'Prequisite',
     'input_type' => 'Tipe Masukan',
     'output_type' => 'Tipe Keluaran',
     'mandatory' => 'Mandatory',
@@ -81,6 +82,7 @@ return array(
     'sb_m_file' => 'File Manager',
     'sb_m_chart' => 'Chart',
     'sb_m_setting' => 'Setting',
+    'sb_m_report' => 'Report',
 
     // Menu User
     'user_i_header' => 'Daftar Pengguna',
@@ -144,6 +146,10 @@ return array(
     'rq_e_header' => 'Ubah Persyaratan',
     'rq_c_header' => 'Tambah Persyaratan',
 
+    // Menu Prequisite
+    'pq_e_header' => 'Ubah Prequisite',
+    'pq_c_header' => 'Tambah Prequisite',
+
     // Base proses
     'bp_e_header' => 'Ubah Base Process',
     'bp_c_header' => 'Tambah Base Process',
@@ -159,7 +165,5 @@ return array(
     'bpo_i_header' => 'Keluaran Base Process',
     'bpo_c_header' => 'Tambah Base Process Output',
     'bpo_e_header' => 'Ubah Base Process Output',
-
-
 
 );
